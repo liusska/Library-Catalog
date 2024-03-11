@@ -7,3 +7,22 @@ test('Verify "All Books" link is available', async ( {page} ) => {
     const isLinkVisible = await allBokksLink.isVisible();
     expect(isLinkVisible).toBe(true);
 })
+
+
+
+test('Verify "Login" button is available', async ( {page} ) => {
+    await page.goto('http://localhost:3000');
+    await page.waitForSelector('nav.navbar');
+    const loginBtn = await page.$('a[href="/login"]');
+    const isLoginBtnVisible = await loginBtn.isVisible();
+    expect(isLoginBtnVisible).toBe(true);
+})
+
+test('Verify "Register" button is available', async ( {page} ) => {
+    await page.goto('http://localhost:3000');
+    await page.waitForSelector('nav.navbar');
+    const registerBtn = await page.$('a[href="/register"]');
+    const isRegisterBtnVisible = await registerBtn.isVisible();
+    expect(isRegisterBtnVisible).toBe(true);
+})
+
