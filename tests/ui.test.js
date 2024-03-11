@@ -107,3 +107,100 @@ test('Submit Login form with empty password field', async ({ page }) => {
     await page.$('a[href="/login"]');
     expect(page.url()).toBe(baseURL + '/login');
 });
+
+// Check Register
+
+test('Register with valid credentials', async ({ page }) => {
+    await page.goto(baseURL + '/register');
+
+    await page.fill('input[name="email"]', 'test@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+    await page.fill('input[name="confirm-pass"]', '123456');
+    await page.click('input[type="submit"]');
+
+    await page.$('a[href="/catalog"]');
+    expect(page.url()).toBe(baseURL + '/catalog');
+});
+
+
+test('Submit Register form with empty fields', async ({ page }) => {
+    await page.goto(baseURL + '/register');
+    await page.click('input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    });
+
+    await page.$('a[href="/register"]');
+    expect(page.url()).toBe(baseURL + '/register');
+});
+
+test('Submit Register form with empty email field', async ({ page }) => {
+    await page.goto(baseURL + '/register');
+    await page.fill('input[name="password"]', '123456');
+    await page.fill('input[name="confirm-pass"]', '123456');
+
+    // Check if popup window shows
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    });
+
+    await page.$('a[href="/register"]');
+    expect(page.url()).toBe(baseURL + '/register');
+});
+
+test('Submit Register form with empty password field', async ({ page }) => {
+    await page.goto(baseURL + '/register');
+    await page.fill('input[name="email"]', 'test@abv.bg');
+    await page.fill('input[name="confirm-pass"]', '123456');
+    await page.click('input[type="submit"]');
+
+    // Check if popup window shows
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    });
+
+    await page.$('a[href="/register"]');
+    expect(page.url()).toBe(baseURL + '/register');
+});
+
+test('Submit Register form with empty confirm password field', async ({ page }) => {
+    await page.goto(baseURL + '/register');
+    await page.fill('input[name="email"]', 'test@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+    await page.click('input[type="submit"]');
+
+    // Check if popup window shows
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    });
+
+    await page.$('a[href="/register"]');
+    expect(page.url()).toBe(baseURL + '/register');
+});
+
+test('Submit Register form with different password fields', async ({ page }) => {
+    await page.goto(baseURL + '/register');
+    await page.fill('input[name="email"]', 'test1@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+    await page.fill('input[name="confirm-pass"]', '654321');
+    await page.click('input[type="submit"]');
+
+    // Check if popup window shows
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    });
+
+    await page.$('a[href="/register"]');
+    expect(page.url()).toBe(baseURL + '/register');
+});
