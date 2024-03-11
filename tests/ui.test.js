@@ -2,6 +2,7 @@ const { test, expect } = require('@playwright/test')
 
 const baseURL = 'http://localhost:3000'
 
+// Check if Links are visible 
 test('Verify "All Books" link is available', async ( {page} ) => {
     await page.goto(baseURL);
     await page.waitForSelector('nav.navbar');
@@ -27,7 +28,7 @@ test('Verify "Register" button is available', async ( {page} ) => {
     expect(isRegisterBtnVisible).toBe(true);
 });
 
-test.only('Verify "All Books" link is visible after user login', async ( {page} ) => {
+test('Verify "All Books" link is visible after user login', async ( {page} ) => {
     await page.goto(baseURL);
     await page.waitForSelector('nav.navbar');
 
@@ -45,4 +46,64 @@ test.only('Verify "All Books" link is visible after user login', async ( {page} 
     const allBokksLink = await page.$('a[href="/catalog"]');
     const isLinkVisible = await allBokksLink.isVisible();
     expect(isLinkVisible).toBe(true);
+});
+
+// Check Login
+
+test('Login with valid credentials', async ({ page }) => {
+    await page.goto(baseURL + '/login');
+
+    await page.fill('input[name="email"]', 'peter@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+    await page.click('input[type="submit"]');
+
+    await page.$('a[href="/catalog"]');
+    expect(page.url()).toBe(baseURL + '/catalog');
+});
+
+
+test('Submit Login form with empty fields', async ({ page }) => {
+    await page.goto(baseURL + '/login');
+    await page.click('input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    });
+
+    await page.$('a[href="/login"]');
+    expect(page.url()).toBe(baseURL + '/login');
+});
+
+test('Submit Login form with empty email field', async ({ page }) => {
+    await page.goto(baseURL + '/login');
+    await page.fill('input[name="password"]', '123456');
+    await page.click('input[type="submit"]');
+
+    // Check if popup window shows
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    });
+
+    await page.$('a[href="/login"]');
+    expect(page.url()).toBe(baseURL + '/login');
+});
+
+test('Submit Login form with empty password field', async ({ page }) => {
+    await page.goto(baseURL + '/login');
+    await page.fill('input[name="email"]', 'peter@abv.bg');
+    await page.click('input[type="submit"]');
+
+    // Check if popup window shows
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    });
+
+    await page.$('a[href="/login"]');
+    expect(page.url()).toBe(baseURL + '/login');
 });
