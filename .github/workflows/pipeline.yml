@@ -23,11 +23,11 @@ jobs:
     - name: Start Backend
       run: npm run start-be &
     - name: Sleep for 5 seconds
-      run: sleed 5
+      run: sleep 5
     - name: Start Frontend
       run: npm run start-fe
     - name: Sleep for 5 seconds
-      run: sleed 5
+      run: sleep 5
     - name: Install Playwright browsers
       run: npx playwright install
     - name: Execute Playwright tests
