@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test')
 const baseURL = 'http://localhost:3000'
 
 // Check if Links are visible 
-test('Verify "All Books" link is available', async ( {page} ) => {
+test('Verify "All Books" link is available', async ({ page }) => {
     await page.goto(baseURL);
     await page.waitForSelector('nav.navbar');
     const allBokksLink = await page.$('a[href="/catalog"]');
@@ -12,7 +12,7 @@ test('Verify "All Books" link is available', async ( {page} ) => {
 });
 
 
-test('Verify "Login" button is available', async ( {page} ) => {
+test('Verify "Login" button is available', async ({ page }) => {
     await page.goto(baseURL);
     await page.waitForSelector('nav.navbar');
     const loginBtn = await page.$('a[href="/login"]');
@@ -20,7 +20,7 @@ test('Verify "Login" button is available', async ( {page} ) => {
     expect(isLoginBtnVisible).toBe(true);
 });
 
-test('Verify "Register" button is available', async ( {page} ) => {
+test('Verify "Register" button is available', async ({ page }) => {
     await page.goto(baseURL);
     await page.waitForSelector('nav.navbar');
     const registerBtn = await page.$('a[href="/register"]');
@@ -28,7 +28,7 @@ test('Verify "Register" button is available', async ( {page} ) => {
     expect(isRegisterBtnVisible).toBe(true);
 });
 
-test('Verify "All Books" link is visible after user login', async ( {page} ) => {
+test('Verify "All Books" link is visible after user login', async ({ page }) => {
     await page.goto(baseURL);
     await page.waitForSelector('nav.navbar');
 
@@ -113,7 +113,7 @@ test('Submit Login form with empty password field', async ({ page }) => {
 test('Register with valid credentials', async ({ page }) => {
     await page.goto(baseURL + '/register');
 
-    await page.fill('input[name="email"]', 'test@abv.bg');
+    await page.fill('input[name="email"]', 'asdtest@abv.bg');
     await page.fill('input[name="password"]', '123456');
     await page.fill('input[name="confirm-pass"]', '123456');
     await page.click('input[type="submit"]');
@@ -207,9 +207,9 @@ test('Submit Register form with different password fields', async ({ page }) => 
 
 // Check Add Book
 
-test('Add book with correct data', async({ page }) => {
+test('Add book with correct data', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
@@ -233,9 +233,9 @@ test('Add book with correct data', async({ page }) => {
     expect(page.url()).toBe(baseURL + '/catalog');
 });
 
-test('Add book with empty Title field', async({ page }) => {
+test('Add book with empty Title field', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
@@ -260,14 +260,14 @@ test('Add book with empty Title field', async({ page }) => {
         expect(dialog.message()).toContain('All fields are required!');
         await dialog.accept();
     });
-    
+
     await page.$('a[href="/create"]');
     expect(page.url()).toBe(baseURL + '/create');
 });
 
-test('Add book with empty Descritption field', async({ page }) => {
+test('Add book with empty Descritption field', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
@@ -292,15 +292,15 @@ test('Add book with empty Descritption field', async({ page }) => {
         expect(dialog.message()).toContain('All fields are required!');
         await dialog.accept();
     });
-    
+
     await page.$('a[href="/create"]');
     expect(page.url()).toBe(baseURL + '/create');
 });
 
 
-test('Add book with empty Image field', async({ page }) => {
+test('Add book with empty Image field', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
@@ -325,15 +325,15 @@ test('Add book with empty Image field', async({ page }) => {
         expect(dialog.message()).toContain('All fields are required!');
         await dialog.accept();
     });
-    
+
     await page.$('a[href="/create"]');
     expect(page.url()).toBe(baseURL + '/create');
 });
 
 
-test('Verify that all books are displayed', async({ page }) => {
+test('Verify that all books are displayed', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
@@ -348,9 +348,9 @@ test('Verify that all books are displayed', async({ page }) => {
     expect(bookElements.length).toBeGreaterThan(0);
 });
 
-test('Login and navigate to Details page', async({ page }) => {
+test('Login and navigate to Details page', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
@@ -368,9 +368,9 @@ test('Login and navigate to Details page', async({ page }) => {
     expect(detailsPageTitlee).toBe('Test Book');
 });
 
-test('Navigate as Guest to Details page', async({ page }) => {
+test('Navigate as Guest to Details page', async ({ page }) => {
     await page.goto(baseURL + '/catalog');
-    
+
     await page.click('a[href="/catalog"]');
     await page.waitForSelector('.otherBooks');
     await page.click('.otherBooks a.button');
@@ -380,9 +380,9 @@ test('Navigate as Guest to Details page', async({ page }) => {
     expect(detailsPageTitle).toBe('Test Book');
 });
 
-test('Verify Details page if filled with correct data', async({ page }) => {
+test('Verify Details page if filled with correct data', async ({ page }) => {
     await page.goto(baseURL + '/catalog');
-    
+
     await page.click('a[href="/catalog"]');
     await page.waitForSelector('.otherBooks');
     await page.click('.otherBooks a.button');
@@ -402,9 +402,9 @@ test('Verify Details page if filled with correct data', async({ page }) => {
 });
 
 
-test('Creator see Edit and Delete buttons in Details', async({ page }) => {
+test('Creator see Edit and Delete buttons in Details', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
@@ -428,9 +428,9 @@ test('Creator see Edit and Delete buttons in Details', async({ page }) => {
 });
 
 
-test('Non creator can NOT see Edit and Delete buttons in Details', async({ page }) => {
+test('Non creator can NOT see Edit and Delete buttons in Details', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'john@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
@@ -454,9 +454,9 @@ test('Non creator can NOT see Edit and Delete buttons in Details', async({ page 
 });
 
 
-test('Non creator can see Like option in Details', async({ page }) => {
+test('Non creator can see Like option in Details', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'john@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
@@ -476,9 +476,9 @@ test('Non creator can see Like option in Details', async({ page }) => {
 });
 
 
-test('Creator can NOT see Like option in Details', async({ page }) => {
+test('Creator can NOT see Like option in Details', async ({ page }) => {
     await page.goto(baseURL + '/login');
-    
+
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
