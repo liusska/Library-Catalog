@@ -28,5 +28,7 @@ jobs:
       run: npm run start-fe
     - name: Sleep for 5 seconds
       run: sleed 5
+    - name: Install Playwright browsers
+      run: npx playwright install
     - name: Execute Playwright tests
       run: npm run test-ui
